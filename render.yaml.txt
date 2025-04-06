@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: stem-pipeline-dashboard
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python stem_pipeline.py
+    plan: free

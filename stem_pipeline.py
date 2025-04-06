@@ -9,7 +9,8 @@ import os
 df = pd.read_csv("NCES_IPEDS_RAW_DATA.csv", dtype=str)
 df.columns = df.columns.str.strip()
 # Clean up whitespace from string cells
-df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+for col in df.select_dtypes(include='object').columns:
+    df[col] = df[col].str.strip()
 
 # Melt year columns into long format
 id_vars = ["Citizenship", "CIP Code and Description (2 digit)", "Award Level Code"]

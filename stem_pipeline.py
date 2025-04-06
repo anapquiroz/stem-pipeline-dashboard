@@ -6,14 +6,10 @@ import numpy as np
 import os
 
 # Load the data
-df = pd.read_csv("NCES_IPEDS_RAW_DATA.csv", dtype={"Award Level Code": str})
-# Strip extra whitespace from headers just in case
-if df.columns.str.contains('Unnamed').any():
-    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+df = pd.read_csv("NCES_IPEDS_RAW_DATA.csv", dtype=str)
 df.columns = df.columns.str.strip()
-print("[Render Debug] Loaded CSV with columns:", df.columns.tolist())
-print("[Render Debug] Sample data:")
-print(df.head())
+# Clean up whitespace from string cells
+df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
 # Melt year columns into long format
 id_vars = ["Citizenship", "CIP Code and Description (2 digit)", "Award Level Code"]
@@ -199,6 +195,7 @@ if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 8050))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 

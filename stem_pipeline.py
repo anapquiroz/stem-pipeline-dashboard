@@ -8,15 +8,18 @@ import os
 # Load the data
 df = pd.read_csv("NCES_IPEDS_RAW_DATA.csv", dtype=str)
 df.columns = df.columns.str.strip()
-# Clean up whitespace from string cells
 for col in df.select_dtypes(include='object').columns:
     df[col] = df[col].str.strip()
+print("[DEBUG] Columns loaded:", df.columns.tolist())
 
 # Melt year columns into long format
 id_vars = ["Citizenship", "CIP Code and Description (2 digit)", "Award Level Code"]
 year_cols = [str(y) for y in range(1997, 2024)]
 df_melted = df.melt(id_vars=id_vars, value_vars=year_cols, var_name="Year", value_name="Count")
 df_melted["Count"] = pd.to_numeric(df_melted["Count"], errors="coerce").fillna(0)
+print("[DEBUG] Total count after melt:", df_melted["Count"].sum())
+print("[DEBUG] Melted data sample:")
+print(df_melted.head())
 
 # Clean up columns
 citizenship_map = {

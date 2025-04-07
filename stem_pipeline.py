@@ -6,11 +6,13 @@ import numpy as np
 import os
 
 # Load the data
-df = pd.read_csv("NCES_IPEDS_RAW_DATA.csv", dtype=str)
+file_path = "NCES_IPEDS_RAW_DATA.xlsx"
+df = pd.read_excel(file_path, sheet_name="IPEDSDT", dtype=str)
 df.columns = df.columns.str.strip()
 for col in df.select_dtypes(include='object').columns:
     df[col] = df[col].str.strip()
 print("[DEBUG] Columns loaded:", df.columns.tolist())
+
 
 # Melt year columns into long format
 id_vars = ["Citizenship", "CIP Code and Description (2 digit)", "Award Level Code"]
@@ -199,6 +201,7 @@ if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 8050))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
